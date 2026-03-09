@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>GitHub Issues Tracker Log in</title>
+    <link rel="shortcut icon" href="./images/github-logo.png" type="image/x-icon" />
+
+    <!-- font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet" />
+
+   
+    <!-- Tailwind & DaisyUI -->
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <style>
+        * {
+            font-family: 'Geist', sans-serif;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-100">
+    <div class="h-[740px] w-[520px] mx-auto  flex items-center justify-center">
+        <div class="card w-96 bg-white shadow-xl">
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <img src="./images/github-logo.png" class="w-16 mx-auto" alt="GitHub logo" />
+                    <h1 class="text-xl font-bold mt-2">GitHub Issues Tracker</h1>
+                    <p class="text-sm text-gray-500">Sign in to manage your issues</p>
+                </div>
+
+                <form action="#" method="POST" class="space-y-4">
+                    <div>
+                        <label class="label">
+                            <span class="label-text">Username</span>
+                        </label>
+                        <input type="text" name="username" class="input input-bordered w-full"
+                            placeholder="Enter Username" />
+                        <p class="text-xs text-gray-400 mt-1">
+                            Default: <span class="font-semibold">admin</span>
+                        </p>
+                    </div>
+
+                    <div>
+                        <label class="label">
+                            <span class="label-text">Password</span>
+                        </label>
+                        <input type="password" name="password" class="input input-bordered w-full"
+                            placeholder="Enter Password" />
+                        <p class="text-xs text-gray-400 mt-1">
+                            Default: <span class="font-semibold">admin123</span>
+                        </p>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-full">
+                        Sign in
+                    </button>
+                </form>
+
+                <div class="divider">OR</div>
+                <div class="text-center text-sm text-gray-600">
+                    <p>Demo Credentials:</p>
+                    <p><strong>Username:</strong> admin</p>
+                    <p><strong>Password:</strong> admin123</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
