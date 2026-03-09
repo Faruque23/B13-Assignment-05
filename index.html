@@ -14,9 +14,15 @@
 
     <!-- Tailwind & DaisyUI -->
     <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
-<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
     <style>
-        *{
+        * {
             font-family: 'Geist', sans-serif;
         }
     </style>
@@ -24,7 +30,33 @@
 </head>
 
 <body>
+    <div class="navbar max-w-full mx-auto mx-20 bg-base-100 shadow-sm ">
 
+        <div class="w-11/12 mx-20  flex items-center justify-between">
+            <div class="flex-1 flex items-center justify-self-start gap-2">
+                <img src="./images/github-logo.png" alt="logo" class="w-10" />
+                <h1 class="text-xl font-bold ml-2">GitHub Issues Tracker</h1>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="input-group">
+                    <label class="input">
+                        <svg class="h-[1em] opacity-50" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                            <g stroke-linejoin="round" stroke-linecap="round" stroke-width="2.5" fill="none"
+                                stroke="currentColor">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="m21 21-4.3-4.3"></path>
+                            </g>
+                        </svg>
+                        <input type="search" required placeholder="Search Issues" />
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span> <i class="fa-solid fa-plus"></i></span>
+                    New Issue
+                </button>
+            </div>
+        </div>
+    </div>
 
 </body>
 
