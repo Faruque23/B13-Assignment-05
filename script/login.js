@@ -10,7 +10,8 @@ if (loginForm) {
 
         // simple demo check – replace with real auth as needed
         if (username === "admin" && password === "admin123") {
-            // redirect on successful login
+            // mark session and redirect on successful login
+            localStorage.setItem('loggedIn', 'true');
             window.location.href = "index.html";
         } else {
             alert("Invalid username or password");

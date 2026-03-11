@@ -1,6 +1,12 @@
 // main.js - handles issue fetching, filtering, and UI interactions
 console.log("Main page script loaded");
 
+// if user isn't logged in, send back to login page
+if (localStorage.getItem('loggedIn') !== 'true') {
+    console.log("not logged in, redirecting");
+    window.location.href = 'login.html';
+}
+
 const API_BASE = "https://phi-lab-server.vercel.app/api/v1/lab";
 
 // DOM references
