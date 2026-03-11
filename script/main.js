@@ -165,12 +165,25 @@ function renderIssues(issues) {
 
 function openModal(issue) {
     modalTitle.textContent = issue.title;
-    // meta row: status badge + opened by/ date
+    // meta row: status badge + opened by/date with bullets
     const statusCls = issue.status.toLowerCase() === "open" ? "badge badge-sm badge-success" : "badge badge-sm badge-secondary";
-    const statusText = issue.status.charAt(0).toUpperCase() + issue.status.slice(1);
-    const dateStr = issue.createdAt ? new Date(issue.createdAt).toLocaleDateString() : "";
-    modalMeta.innerHTML = `<span class=\"${statusCls}\">${statusText}</span>` +
-        ` <span>Opened by ${issue.author || "-"} • ${dateStr}</span>`;
+    const statusText = issue.status.toLowerCase() === "open" ? "Opened" : "Closed"; // use past tense
+    // format date as dd/mm/yyyy
+    let dateStr = "";
+    if (issue.createdAt) {
+        const d = new Date(issue.createdAt);
+        const dd = String(d.getDate()).padStart(2, '0');
+        const mm = String(d.getMonth() + 1).padStart(2, '0');
+        const yyyy = d.getFullYear();
+        dateStr = `${dd}/${mm}/${yyyy}`;
+    }
+    modalMeta.innerHTML = `
+        <span class="${statusCls}">${statusText}</span>
+        <span class="mx-2">&bull;</span>
+        <span>Opened by ${issue.author || "-"}</span>
+        <span class="mx-2">&bull;</span>
+        <span>${dateStr}</span>
+    `;
 
     // labels row
     let labelsValue = issue.labels;
@@ -246,9 +259,6 @@ searchInput.addEventListener("keyup", e => {
 });
 
 modalClose.addEventListener("click", closeModal);
-// close button at bottom
-const modalCloseBottom = document.getElementById("modal-close-bottom");
-if (modalCloseBottom) modalCloseBottom.addEventListener("click", closeModal);
 
 // initial load
 loadIssues();
