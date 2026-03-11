@@ -30,7 +30,7 @@
 </head>
 
 <body>
-    <div class="navbar max-w-full mx-auto mx-20 bg-base-100 shadow-sm ">
+    <div class="navbar max-w-full mx-auto bg-base-100 shadow-sm ">
 
         <div class="w-11/12 mx-20  flex items-center justify-between">
             <div class="flex-1 flex items-center justify-self-start gap-2">
@@ -47,17 +47,63 @@
                                 <path d="m21 21-4.3-4.3"></path>
                             </g>
                         </svg>
-                        <input type="search" required placeholder="Search Issues" />
+                        <input id="searchInput" type="search" required placeholder="Search Issues" />
                     </label>
                 </div>
-                <button type="submit" class="btn btn-primary">
+               
+                <button type="button" class="btn btn-primary ml-2">
                     <span> <i class="fa-solid fa-plus"></i></span>
                     New Issue
                 </button>
             </div>
         </div>
     </div>
+    
+    <!-- issues section -->
+    <div class="w-11/12 mx-20 mt-6">
+        <!-- tabs -->
+        <div class="tabs max-w-full mx-auto bg-base-100 shadow-sm mt-6 my-10 gap-4">
+            <button class="tab tab-bordered tab-active w-30 btn btn-soft btn-primary font-bold text-xl" data-status="all">All</button>
+            <button class="tab tab-bordered w-30 btn btn-soft btn-primary font-bold text-xl" data-status="open">Open</button>
+            <button class="tab tab-bordered w-30 btn btn-soft btn-primary font-bold text-xl" data-status="closed">Closed</button>
+        </div>
 
+        <!-- summary / count row -->
+        <div id="issue-summary" class="flex justify-between items-center py-4">
+            <div class="flex items-center gap-2">
+                
+                <img src="./images/Aperture.png" alt="Aperture" class="w-4" />
+                <span id="issues-count" class="font-semibold">0</span>
+                <span>issues</span>
+                <br>
+                <p>Track and manage your project issues</p>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="flex items-center gap-1"><img src="./images/Open-Status.png" class="w-4" alt="open"/> Open</span>
+                <span class="flex items-center gap-1"><img src="./images/Closed- Status .png" class="w-4" alt="closed"/> Closed</span>
+            </div>
+        </div>
+
+        <!-- loader -->
+        <div id="loader" class="flex justify-center items-center py-10 hidden">
+            <span class="loading loading-spinner loading-lg"></span>
+        </div>
+
+        <!-- issues grid -->
+        <div id="issues-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+    </div>
+
+    <!-- modal -->
+    <div id="issue-modal" class="modal">
+        <div class="modal-box relative">
+            <button class="btn btn-sm btn-circle absolute right-2 top-2" id="modal-close">✕</button>
+            <h3 id="modal-title" class="text-lg font-bold"></h3>
+            <p id="modal-description" class="py-4"></p>
+            <div id="modal-details" class="space-y-2 text-sm"></div>
+        </div>
+    </div>
+
+    <script src="./script/main.js"></script>
 </body>
 
 </html>
