@@ -12,8 +12,10 @@ const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchBtn");
 const issueModal = document.getElementById("issue-modal");
 const modalTitle = document.getElementById("modal-title");
+const modalMeta = document.getElementById("modal-meta");
+const modalLabels = document.getElementById("modal-labels");
 const modalDescription = document.getElementById("modal-description");
-const modalDetails = document.getElementById("modal-details");
+const modalExtra = document.getElementById("modal-extra");
 const modalClose = document.getElementById("modal-close");
 
 let currentStatus = "all";
@@ -163,14 +165,53 @@ function renderIssues(issues) {
 
 function openModal(issue) {
     modalTitle.textContent = issue.title;
+    // meta row: status badge + opened by/ date
+    const statusCls = issue.status.toLowerCase() === "open" ? "badge badge-sm badge-success" : "badge badge-sm badge-secondary";
+    const statusText = issue.status.charAt(0).toUpperCase() + issue.status.slice(1);
+    const dateStr = issue.createdAt ? new Date(issue.createdAt).toLocaleDateString() : "";
+    modalMeta.innerHTML = `<span class=\"${statusCls}\">${statusText}</span>` +
+        ` <span>Opened by ${issue.author || "-"} • ${dateStr}</span>`;
+
+    // labels row
+    let labelsValue = issue.labels;
+    if (!labelsValue && issue.label) {
+        labelsValue = issue.label.split(',').map(s => s.trim());
+    }
+    let labelsHtmlText = '';
+    if (Array.isArray(labelsValue) && labelsValue.length) {
+        labelsHtmlText = labelsValue
+            .map(l => {
+                const key = l.toLowerCase();
+                let cls = "badge badge-sm uppercase";
+                let icon = "";
+                if (key === "bug") {
+                    cls += " bg-red-100 text-red-600";
+                    icon = `<i class=\"fa-solid fa-bug mr-1\"></i>`;
+                } else if (key === "help wanted") {
+                    cls += " bg-yellow-100 text-yellow-600";
+                    icon = `<i class=\"fa-solid fa-question-circle mr-1\"></i>`;
+                } else {
+                    cls += " badge-outline";
+                }
+                return `<span class=\"${cls}\">${icon}${l.toUpperCase()}</span>`;
+            })
+            .join('');
+        labelsHtmlText = `<div class=\"flex flex-wrap gap-1 mt-2\">${labelsHtmlText}</div>`;
+    }
+    modalLabels.innerHTML = labelsHtmlText;
+
     modalDescription.textContent = issue.description || "";
-    modalDetails.innerHTML = `
-        <div><strong>Status:</strong> ${issue.status}</div>
-        <div><strong>Author:</strong> ${issue.author || "-"}</div>
-        <div><strong>Priority:</strong> ${issue.priority || "-"}</div>
-        <div><strong>Label:</strong> ${issue.label || "-"}</div>
-        <div><strong>CreatedAt:</strong> ${new Date(issue.createdAt).toLocaleString()}</div>
-    `;
+
+    // extra section with assignee and priority
+    const priorityText = (issue.priority || "").toUpperCase();
+    let priorityClass = "badge";
+    const lvl = (issue.priority || "").toLowerCase();
+    if (lvl === "high") priorityClass += " badge-error";
+    else if (lvl === "medium") priorityClass += " badge-warning";
+    else if (lvl === "low") priorityClass += " badge-outline badge-sm text-gray-500 bg-gray-100";
+    else priorityClass += " badge-secondary";
+    modalExtra.innerHTML = `<div><strong>Assignee:</strong> ${issue.assignee || "-"}</div><div><strong>Priority:</strong> <span class=\"${priorityClass}\">${priorityText}</span></div>`;
+
     issueModal.classList.add("modal-open");
 }
 
@@ -205,6 +246,9 @@ searchInput.addEventListener("keyup", e => {
 });
 
 modalClose.addEventListener("click", closeModal);
+// close button at bottom
+const modalCloseBottom = document.getElementById("modal-close-bottom");
+if (modalCloseBottom) modalCloseBottom.addEventListener("click", closeModal);
 
 // initial load
 loadIssues();
