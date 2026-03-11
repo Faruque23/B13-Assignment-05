@@ -87,16 +87,75 @@ function renderIssues(issues) {
         const statusColor =
             issue.status.toLowerCase() === "open" ? "border-green-500" : "border-purple-500";
         card.classList.add(statusColor);
+
+        // priority badge top-right with color by level
+        let priorityClass = "badge";
+        const lvl = (issue.priority || "").toLowerCase();
+        if (lvl === "high") {
+            priorityClass += " badge-error"; // red
+        } else if (lvl === "medium") {
+            priorityClass += " badge-warning"; // yellow
+        } else if (lvl === "low") {
+            priorityClass += " badge-outline badge-sm text-gray-500 bg-gray-100"; // light gray
+        } else {
+            priorityClass += " badge-secondary";
+        }
+        const priorityText = (issue.priority || "").toUpperCase();
+        const priorityBadge = `<div class=\"absolute top-2 right-2\"><span class=\"${priorityClass}\">${priorityText}</span></div>`;
+
+        // status icon - spinning green for open, purple solid for closed
+        const statusIcon = issue.status.toLowerCase() === "open"
+            ? `<div class=\"absolute top-2 left-2 text-green-400\"><i class=\"fa-solid fa-circle-notch fa-spin\"></i></div>`
+            : `<div class=\"absolute top-2 left-2 text-purple-400\"><i class=\"fa-solid fa-circle\"></i></div>`;
+
+        // labels row with color coding
+        // labels may come as "labels" array or legacy "label" string
+        let labelsValue = issue.labels;
+        if (!labelsValue && issue.label) {
+            // convert comma-list string to array
+            labelsValue = issue.label.split(',').map(s => s.trim());
+        }
+        const labelsHtml = Array.isArray(labelsValue) && labelsValue.length
+            ? `<div class=\"flex flex-wrap gap-1 mt-3\">` +
+              labelsValue
+                  .map(raw => {
+                      const l = raw.trim();
+                      const key = l.toLowerCase();
+                      let cls = "badge badge-sm uppercase"; // uppercase like priority
+                      let icon = "";
+                      if (key === "bug") {
+                          // light red background with red text/icon
+                          cls += " bg-red-100 text-red-600";
+                          icon = `<i class=\"fa-solid fa-bug mr-1\"></i>`;
+                      } else if (key === "help wanted") {
+                          // light yellow background with amber text/icon
+                          cls += " bg-yellow-100 text-yellow-600";
+                          icon = `<i class=\"fa-solid fa-question-circle mr-1\"></i>`;
+                      } else {
+                          cls += " badge-outline";
+                      }
+                      return `<span class=\"${cls}\">${icon}${l.toUpperCase()}</span>`;
+                  })
+                  .join('') +
+              `</div>`
+            : '';
+
+        // author / id / date
+        const metaHtml = `<div class=\"mt-4 text-xs text-gray-500\">` +
+            `#${issue.id} by ${issue.author || '-'}<br/>` +
+            `${new Date(issue.createdAt).toLocaleDateString()}` +
+            `</div>`;
+
         card.innerHTML = `
-            <h2 class="font-semibold text-md mb-2">${issue.title}</h2>
+            ${priorityBadge}
+            ${statusIcon}
+            <h2 class="font-semibold text-md mb-2 mt-6">${issue.title}</h2>
             <p class="text-sm text-gray-600 line-clamp-3">${issue.description || ''}</p>
-            <div class="mt-3 text-xs space-y-1">
-                <div><strong>Author:</strong> ${issue.author || "-"}</div>
-                <div><strong>Priority:</strong> ${issue.priority || "-"}</div>
-                <div><strong>Label:</strong> ${issue.label || "-"}</div>
-                <div><strong>Created:</strong> ${new Date(issue.createdAt).toLocaleDateString()}</div>
-            </div>
+            
+            ${labelsHtml}
+            ${metaHtml}
         `;
+
         card.addEventListener("click", () => openModal(issue));
         issuesContainer.appendChild(card);
     });
